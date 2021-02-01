@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let Schema = mongoose.Schema
 
-var testShema = new Schema({
+var quizShema = new Schema({
     name : {
         type : String
     },
@@ -24,4 +24,4 @@ var testShema = new Schema({
     }]
 })
 
-module.exports = mongoose.model('Test', testShema)
+module.exports = mongoose.model('Quiz', quizShema)

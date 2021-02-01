@@ -1,48 +1,48 @@
-const Test  = require('../app/models/testModel')
+const Quiz  = require('../app/models/quizModel')
 const { Database } = require('../app/db');
 var assert = require('assert');
 
 
-async function saveTest(name) {
-    const retMe = await new Test({name:name}).save()    
+async function savequiz(name) {
+    const retMe = await new Quiz({name:name}).save()    
     return retMe;
 }
 
-async function saveTestWithQ(name) {
-    const retMe = await new Test({name:name, questions:[({text:"qname", answers:[({text:"first Answer", correct:false, metadata:"testMetaData"})]})]}).save()    
+async function savequizWithQ(name) {
+    const retMe = await new Quiz({name:name, questions:[({text:"qname", answers:[({text:"first Answer", correct:false, metadata:"quizMetaData"})]})]}).save()    
     return retMe;
 }
 
 
 
-describe("It saves a test",function(){
-    const testName = "first test"
+describe("It saves a quiz",function(){
+    const quizName = "first quiz"
     before(async function(){
-        var foundone = await Test.findOne({name:testName});
+        var foundone = await Quiz.findOne({name:quizName});
         if(null!=foundone){
             await foundone.delete();
         }
     })
 
-    it("saves a test",async function(){  
+    it("saves a quiz",async function(){  
         
-        var savedTest= await saveTest(testName)
-        foundone = await Test.findOne({name:testName});
+        var savedquiz= await savequiz(quizName)
+        foundone = await Quiz.findOne({name:quizName});
         assert.notEqual(foundone, null);
-        assert.equal(savedTest.name,foundone.name);
+        assert.equal(savedquiz.name,foundone.name);
     })
 
-    it("saves a test with a question",async function(){  
+    it("saves a quiz with a question",async function(){  
         // const qname = " q11";
-        var savedTest= await saveTestWithQ("first test")
-        console.log(`SAVED TEST: ${savedTest}, SAVED TESTS QUESTIONS TEXT: ${savedTest.text}`)
-        foundone = await Test.findOne({name:testName, questions:[]});
-        foundone.questions.push(({text:"qname", answers:[({text:"first Answer", correct:false, metadata:"testMetaData"})]}))
+        var savedquiz= await savequizWithQ("first quiz")
+        console.log(`SAVED quiz: ${savedquiz}, SAVED Quiz QUESTIONS TEXT: ${savedquiz.text}`)
+        foundone = await Quiz.findOne({name:quizName, questions:[]});
+        foundone.questions.push(({text:"qname", answers:[({text:"first Answer", correct:false, metadata:"quizMetaData"})]}))
         console.log(`FOUNDONE QUESTIONS: ${foundone.questions}`);
         foundone = await foundone.save();
         console.log(foundone);
 
-        var foundSecond = await Test.findOne({name:testName});
+        var foundSecond = await Quiz.findOne({name:quizName});
         console.log(foundSecond);
         assert.notEqual(foundSecond,null)
 
@@ -53,7 +53,7 @@ describe("It saves a test",function(){
     })
 
     after(async function(){
-        foundone = await Test.findOne({name:testName});
+        foundone = await Quiz.findOne({name:quizName});
         await foundone.delete();
         Database.close();
     })
